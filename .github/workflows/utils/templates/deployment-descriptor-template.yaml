@@ -1,0 +1,25 @@
+apiVersion: hub.kalypso.io/v1alpha1
+kind: DeploymentDescriptor
+metadata:
+  name: $WORKLOAD-$ENVIRONMENT-$DEPLOYMENT_TARGET
+spec:
+  workload:
+    name: $WORKLOAD
+    source:
+        repo: https://github.com/$SOURCE_REPO
+        branch: $SOURCE_BRANCH
+        path: .
+    application:
+        name: ucp
+        workspace:
+            name: GM-SDV
+  deploymentTarget:
+    name: $DEPLOYMENT_TARGET
+    environment: $ENVIRONMENT
+    manifests:
+        repo: https://github.com/$GITOPS_REPO
+        branch: $ENVIRONMENT
+        path: $DEPLOYMENT_TARGET
+  workloadVersion:
+    version: $VERSION
+    commit: $SRC_COMMIT
