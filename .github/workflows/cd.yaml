@@ -10,6 +10,7 @@ on:
         description: 'Source commit_id (e.g. 62d1d965735a80afca35da9ec8d8aeb39db2da6c)'
       environment:
         required: false
+        default: dev
         type: string
         description: 'Environment to deploy to (e.g. d2)'
       promotion:
