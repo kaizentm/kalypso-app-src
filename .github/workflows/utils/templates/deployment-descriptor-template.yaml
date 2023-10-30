@@ -10,9 +10,9 @@ spec:
         branch: $SOURCE_BRANCH
         path: .
     application:
-        name: ucp
+        name: greeting
         workspace:
-            name: GM-SDV
+            name: kaizentm
   deploymentTarget:
     name: $DEPLOYMENT_TARGET
     environment: $ENVIRONMENT

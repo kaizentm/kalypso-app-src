@@ -66,10 +66,10 @@ for dir in `find . -type d \( ! -name . \)`; do
         # # Generate deployment descriptor
         # commented out for now as it's not used so far
         # # take the last part from the manifests_dir path e.g. vsu from /home/runner/work/rs-dispatcher-framework-src/rs-dispatcher-framework-src/manifests/./vsu
-        # deployment_target=$(echo $manifests_dir | rev | cut -d'/' -f1 | rev)
+        deployment_target=$(echo $manifests_dir | rev | cut -d'/' -f1 | rev)
         
-        # mkdir -p $manifests_dir/descriptor
-        # $GITHUB_WORKSPACE/.github/workflows/utils/generate-deployment-descriptor.sh  $deployment_target $manifests_dir/descriptor/$deployment_descriptor_file_name $GITHUB_WORKSPACE/$deployment_descriptor_template
+        mkdir -p $manifests_dir/descriptor
+        $GITHUB_WORKSPACE/.github/workflows/utils/generate-deployment-descriptor.sh  $deployment_target $manifests_dir/descriptor/$deployment_descriptor_file_name $GITHUB_WORKSPACE/$deployment_descriptor_template
 
         rm $manifests_dir/$values_file_name
     fi
