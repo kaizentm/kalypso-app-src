@@ -100,7 +100,7 @@ if [[ `git status --porcelain | head -1` ]]; then
     GITHUB_TOKEN=$TOKEN
     echo $GITHUB_TOKEN | gh auth login --with-token
 
-    if gh pr view $deploy_branch_name -R $owner_repo -json state | grep OPEN; then
+    if gh pr view $deploy_branch_name -R $owner_repo --json state | grep OPEN; then
         echo "PR already exists"
     else
         pr_response=$(gh pr create --base $DEST_BRANCH --head $deploy_branch_name --title "deployment '$VERSION'" --body "Deploy to '$ENV_NAME'")
