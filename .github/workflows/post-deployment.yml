@@ -63,7 +63,7 @@ jobs:
       run: |
           .github/workflows/utils/wait-for-deployment.sh -r "$GITOPS_REPO" -b "$ACTIVE_ENVIRONMENT" -c "$COMMIT_ID"
       env:
-        GITOPS_REPO: https://github.com/kaizentm/kalypso-app-gitops
+        GITOPS_REPO: https://github.com/kaizentm/kalypso-gitops
         ACTIVE_ENVIRONMENT: ${{ inputs.environment }}
         COMMIT_ID: ${{ inputs.commit_id }}
 
