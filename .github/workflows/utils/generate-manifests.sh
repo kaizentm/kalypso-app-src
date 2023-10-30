@@ -22,6 +22,7 @@ set -euo pipefail
 gen_manifests_file_name='gen_manifests.yaml'
 values_file_name='values.yaml'
 deployment_descriptor_file_name='deployment_descriptor.yaml'
+deployment_descriptor_template='.github/workflows/utils/templates/deployment-descriptor-template.yaml'
 
 
 mkdir -p $GENERATED_MANIFESTS_FOLDER
