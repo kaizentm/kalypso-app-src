@@ -4,7 +4,7 @@ metadata:
   name: $WORKLOAD-$ENVIRONMENT-$DEPLOYMENT_TARGET
 spec:
   workload:
-    name: $WORKLOAD
+    name: hello
     source:
         repo: https://github.com/$SOURCE_REPO
         branch: $SOURCE_BRANCH
