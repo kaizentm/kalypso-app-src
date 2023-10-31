@@ -10,6 +10,7 @@ spec:
     - name: functional-test
       labels:
         purpose: functional-test
+        application: greeting
         edge: "true"
       environment: dev
       manifests:
@@ -22,6 +23,7 @@ spec:
       labels:
         purpose: performance-test
         edge: "false"
+        application: greeting
       environment: dev
       manifests:
         storage: git
@@ -32,6 +34,7 @@ spec:
     - name: int-test
       labels:
         purpose: int-test
+        application: greeting
       environment: dev
       manifests:
         storage: git
@@ -42,6 +45,7 @@ spec:
     - name: uat-test
       labels:
         purpose: uat-test
+        application: greeting
       environment: stage
       manifests:
         storage: git
