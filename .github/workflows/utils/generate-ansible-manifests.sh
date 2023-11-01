@@ -19,7 +19,8 @@ echo $GENERATED_MANIFESTS_FOLDER
 
 set -euo pipefail
 
-config_file_name="config.sh"
+export CONFIG_FILE="config.sh"
+
 deployment_descriptor_file_name='deployment_descriptor.yaml'
 deployment_descriptor_template='.github/workflows/utils/templates/deployment-descriptor-template.yaml'
 
@@ -33,17 +34,17 @@ cd $FOLDER_WITH_CONFIGS
 for dir in `find . -type d \( ! -name . \)`; do
     # Generate manifests for every leaf folder with values.yaml
     # All values.yaml files in the path to the leaf folder are merged into one values.yaml
-    if [ -z "$(find $dir -mindepth 1 -type d \( ! -name . \))" ] && [ -f $dir/$config_file_name ]; then
+    if [ -z "$(find $dir -mindepth 1 -type d \( ! -name . \))" ] && [ -f $dir/$CONFIG_FILE ]; then
         manifests_dir=$GENERATED_MANIFESTS_FOLDER/$dir
         mkdir -p $manifests_dir   
         path=$dir
         while [[ $path != $FOLDER_WITH_CONFIGS ]];
         do                      
             # if there is any values.yaml in $path flush its content to manifests_dir
-            if [ -f $path/$config_file_name ]; then
-                touch $manifests_dir/$config_file_name
-                cat $path/$config_file_name  $manifests_dir/$config_file_name  > tmp_val && cat tmp_val > $manifests_dir/$config_file_name && rm tmp_val
-                echo >> $manifests_dir/$config_file_name
+            if [ -f $path/$CONFIG_FILE ]; then
+                touch $manifests_dir/$CONFIG_FILE
+                cat $path/$CONFIG_FILE  $manifests_dir/$CONFIG_FILE  > tmp_val && cat tmp_val > $manifests_dir/$CONFIG_FILE && rm tmp_val
+                echo >> $manifests_dir/$CONFIG_FILE
             fi            
             path="$(readlink -f "$path"/..)"
         done

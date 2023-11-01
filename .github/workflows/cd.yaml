@@ -25,6 +25,7 @@ on:
 
 env:
   IMAGE_REPO: ghcr.io/${{ github.repository }}/${{ vars.APP_NAME }}
+  PACKAGE_STORAGE_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 jobs:
   Deploy:
@@ -55,9 +56,12 @@ jobs:
         run: |
           IMAGE_NAME=$IMAGE_REPO:$VERSION
           PACKAGE_NAME=$APP_NAME-$VERSION.deb
+          PACKAGE_STORAGE_URL=$PACKAGE_STORAGE_BASE_URL/$PACKAGE_NAME
 
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+          echo "PACKAGE_STORAGE_URL=$PACKAGE_STORAGE_URL" >> $GITHUB_ENV
         env:
           VERSION: ${{ inputs.version }} 
           APP_NAME: ${{ vars.APP_NAME }}
