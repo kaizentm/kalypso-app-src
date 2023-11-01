@@ -52,4 +52,26 @@ spec:
         type: kustomize            
         repo: https://github.com/kaizentm/kalypso-app-gitops
         branch: stage
-        path: ./uat-test                 
+        path: ./uat-test    
+    - name: edge
+      labels:
+        purpose: edge
+        application: greeting
+      environment: prod
+      manifests:
+        storage: git
+        type: kustomize            
+        repo: https://github.com/kaizentm/kalypso-app-gitops
+        branch: prod
+        path: ./edge                        
+    - name: cloud
+      labels:
+        purpose: cloud
+        application: greeting
+      environment: prod
+      manifests:
+        storage: git
+        type: kustomize            
+        repo: https://github.com/kaizentm/kalypso-app-gitops
+        branch: prod
+        path: ./cloud                      
