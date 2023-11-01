@@ -1,0 +1,167 @@
+- Kalypso is an Azure Arc PoC
+- motivation
+- apps and compute -> great variety -> Decide and Deliver -> nature, connectivity -> Scheduling and Reconciling (separation of concerns, loosly coupled) -> Git repository
+- plenty of reconcilers, What about scheduling?
+- manual -> automated tool
+- promotiional flow
+- summarixe requirements
+-       separation of concerns
+-       promotional flow
+-       reconciler agnostic
+-       observeable 
+- Kalypso is an umbrella, composable solution which icludes a pattern (roles, responsonilities, GH repos setup) and a set of supporting this pattern tools GH action worklflows, scheduler, observability hub
+- Roles. Platform team (Target), App team
+- diagram
+    - platform flow -> kalypso  
+- promoted vs not-promoted changes      
+- explain setup and show gitops repo 
+- show app src
+- show control plane, cluster types, show templates 
+- show configs, configs can be stored everywhere, the repo structure doesn't really 
+- onboard application
+
+export org=kaizentm
+export prefix=kalypso
+
+
+# create workload registration file
+
+cat <<EOF >workloads/hello-world-app.yaml
+apiVersion: scheduler.kalypso.io/v1alpha1
+kind: WorkloadRegistration
+metadata:
+  name: hello-world-app
+  labels:
+    type: application
+spec:
+  workload:
+    repo: https://github.com/$org/$prefix-app-src
+    branch: main
+    path: workload/
+  workspace: kaizen-app-team
+EOF
+
+git add .
+git commit -m 'workload registration'
+git push
+
+- Environments promotion
+- Commit status
+- define scheduling policies
+
+git checkout dev
+git pull
+mkdir -p scheduling/kaizen
+
+cat <<EOF >scheduling/kaizen/functional-test-policy.yaml
+apiVersion: scheduler.kalypso.io/v1alpha1
+kind: SchedulingPolicy
+metadata:
+  name: functional-test-policy
+spec:
+  deploymentTargetSelector:
+    workspace: kaizen-app-team
+    labelSelector:
+      matchLabels:
+        purpose: functional-test
+        edge: "true"
+  clusterTypeSelector:
+    labelSelector:
+      matchLabels:
+        restricted: "true"
+        edge: "true"
+EOF
+
+cat <<EOF >scheduling/kaizen/performance-test-policy.yaml
+apiVersion: scheduler.kalypso.io/v1alpha1
+kind: SchedulingPolicy
+metadata:
+  name: performance-test-policy
+spec:
+  deploymentTargetSelector:
+    workspace: kaizen-app-team
+    labelSelector:
+      matchLabels:
+        purpose: performance-test
+        edge: "false"
+  clusterTypeSelector:
+    labelSelector:
+      matchLabels:
+        size: large
+EOF
+
+cat <<EOF >scheduling/kaizen/int-test-policy.yaml
+apiVersion: scheduler.kalypso.io/v1alpha1
+kind: SchedulingPolicy
+metadata:
+  name: int-test-policy
+spec:
+  deploymentTargetSelector:
+    workspace: kaizen-app-team
+    labelSelector:
+      matchLabels:
+        purpose: int-test
+  clusterTypeSelector:
+    labelSelector:
+      matchLabels:
+        type: vm
+EOF
+
+git add .
+git commit -m 'application scheduling policies'
+git config pull.rebase false
+git pull --no-edit
+git push
+
+- show generated manifests
+- merge PR
+- show promotional workflow and compliance status, commit status, post deployment activities
+- define policies in stage 
+git checkout stage
+git pull
+mkdir -p scheduling/kaizen
+
+cat <<EOF >scheduling/kaizen/uat-test-policy.yaml
+apiVersion: scheduler.kalypso.io/v1alpha1
+kind: SchedulingPolicy
+metadata:
+  name: uat-test-policy
+spec:
+  deploymentTargetSelector:
+    workspace: kaizen-app-team
+    labelSelector:
+      matchLabels:
+        purpose: uat-test
+  clusterTypeSelector:
+    labelSelector: {}
+EOF
+
+git add .
+git commit -m 'application scheduling policies'
+git config pull.rebase false
+git pull --no-edit
+git push
+
+- commit status
+- Build and deploy application
+- show the application working
+kubectl port-forward svc/hello-world-service -n dev-kaizen-app-team-hello-world-app-functional-test 9090:9090 
+
+kubectl port-forward svc/hello-world-service -n dev-kaizen-app-team-hello-world-app-performance-test 8080:8080
+
+curl localhost:9092
+
+- update config in stage
+- Argocd
+  kubectl port-forward svc/argocd-server 8080:80 -n argocd
+  admin -WX95ucedGtQI01B
+
+- restart app
+kubectl rollout restart deployment hello-world-deployment -n stage-kaizen-app-team-hello-world-app-uat-test
+kubectl port-forward svc/hello-world-service -n stage-kaizen-app-team-hello-world-app-uat-test 8002:8000
+
+
+
+
+k delete gitopsrepoes.scheduler.kalypso.io dev -n dev 
+k delete gitopsrepoes.scheduler.kalypso.io stage -n stage 
