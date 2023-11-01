@@ -2,6 +2,8 @@ apiVersion: hub.kalypso.io/v1alpha1
 kind: DeploymentDescriptor
 metadata:
   name: $WORKLOAD-$ENVIRONMENT-$DEPLOYMENT_TARGET
+  labels:
+      config-revision: $CONFIG_REVISION  
 spec:
   workload:
     name: hello

@@ -82,7 +82,8 @@ jobs:
           SOURCE_BRANCH: ${{ github.event.repository.default_branch }}
           GITOPS_REPO: ${{ vars.MANIFESTS_REPO }}
           VERSION: ${{ env.VERSION }}
-          SRC_COMMIT: ${{ inputs.commit_id }}          
+          SRC_COMMIT: ${{ inputs.commit_id }}     
+          CONFIG_REVISION: ${{ env.CONFIG_COMMIT_ID}}     
 
 
       - name: Create PR
