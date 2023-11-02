@@ -13,8 +13,21 @@
 - Roles. Platform team (Target), App team
 - diagram
     - platform flow -> kalypso  
-- promoted vs not-promoted changes      
 - explain setup and show gitops repo 
+- show app src
+- show control plane, cluster types, show templates 
+- show configs, configs can be stored everywhere, the repo structure doesn't really 
+- Show scheduling (drone + command center) 
+- show ansible and argo/cd manifests
+- Show two types of promotion 
+  - app and observability hub 
+  - platform (global config))
+- Show hierarchy of control planes
+- Mention promotion of platform services
+
+---------------------
+- promoted vs not-promoted changes      
+
 - show app src
 - show control plane, cluster types, show templates 
 - show configs, configs can be stored everywhere, the repo structure doesn't really 
