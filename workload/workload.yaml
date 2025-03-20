@@ -35,7 +35,7 @@ spec:
       labels:
         purpose: int-test
         application: greeting
-        host: vm
+        host: linux
       environment: dev
       manifests:
         storage: git
