@@ -1,5 +1,5 @@
 FROM ruby:2.5
-install dotenv -v 2.8.1
+RUN  gem install dotenv -v 2.8.1
 RUN  gem install --quiet --no-document fpm
 
 ARG binary_name
